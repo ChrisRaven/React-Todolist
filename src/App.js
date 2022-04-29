@@ -13,6 +13,18 @@ export default function App() {
     setHighestId(prevHighestId => prevHighestId + 1)
   }, [items])
 
+  useEffect(() => {
+    const entries = JSON.parse(localStorage.getItem('entries') || '[]')
+    setItems(entries)
+    const ids = entries.map(entry => entry.id)
+    const maxId = Math.max(ids)
+    setHighestId(maxId + 1)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('entries', JSON.stringify(items))
+  }, [items])
+
 
   function showForm(values) {
     setFormVisible(true)
@@ -73,4 +85,3 @@ export default function App() {
 
 // TODO
 // styling
-// localStorage

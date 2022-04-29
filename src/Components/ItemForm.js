@@ -9,7 +9,7 @@ export default function ItemForm({events: {addItemConfirm, editItemConfirm, hide
           text: document.getElementById('text').value,
           id: id
         })}
-      >Edit</button>}
+      >Save</button>}
       
       {!editing && <button
         onClick={(event) => addItemConfirm(event, {

@@ -10,21 +10,61 @@ const ACTIONS = {
   READ_FROM_STORAGE: 'read-from-storage'
 }
 
-function reducer(todos, action) {
-  switch (action.type) {
-    case ACTIONS.READ_FROM_STORAGE:
-      return action.payload
-    case ACTIONS.ADD:
-      return [...todos, action.payload]
-    case ACTIONS.EDIT:
-      return todos.map(todo => (
-        todo.id === action.payload.id ? {...todo, text: action.payload.text} : todo
+
+let actions = {
+  Add: class {
+    constructor(todos, action) {
+      this.todos = todos
+      this.action = action
+    }
+
+    act() {
+      return [...this.todos, this.action.payload] 
+    }
+  },
+
+  ReadFromStorage: class {
+    constructor(todos, action) {
+      this.todos = todos
+      this.action = action
+    }
+
+    act() {
+      return this.action.payload
+    }
+  },
+
+  Edit: class {
+    constructor(todos, action) {
+      this.todos = todos
+      this.action = action
+    }
+
+    act() {
+      return this.todos.map(todo => (
+        todo.id === this.action.payload.id ? {...todo, text: this.action.payload.text} : todo
       ))
-    case ACTIONS.REMOVE:
-      return todos.filter(todo => todo.id !== action.payload.id)
-    default:
-      return todos
+    }
+  },
+
+  Remove: class {
+    constructor(todos, action) {
+      this.todos = todos
+      this.action = action
+    }
+
+    act() {
+      return this.todos.filter(todo => todo.id !== this.action.payload.id)
+    }
   }
+}
+
+
+function reducer(todos, action) {
+  let words = action.type.split('-')
+  let className = words.map(word => word[0].toUpperCase() + word.slice(1)).join('')
+
+  return (new actions[className](todos, action)).act()
 }
 
 
@@ -113,5 +153,5 @@ export default function App() {
 
 
 
-// TODO
+// TODO:
 // styling

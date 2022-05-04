@@ -144,14 +144,10 @@ export default function App() {
 
   return (
     <div>
-      <button onClick={addItem}>Add Item</button>
+      <h1>My Todo list</h1>
+      <button onClick={addItem} className="add-item">Add Item</button>
       {rows}
       {formVisible && <ItemForm events={{addItemConfirm, editItemConfirm, hideForm}} formValues={formValues} />}
     </div>
   )
 }
-
-
-
-// TODO:
-// styling
